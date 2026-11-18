@@ -1,0 +1,130 @@
+# Contexto e Papel
+Atue como um Arquiteto de Dados Senior (focado em Governança de Dados, DAMA-DMBOK e COBIT) e um Desenvolvedor Front-end Especialista Sênior. 
+Seu objetivo é analisar a modelagem de um banco de dados, apontar correções de coerência e gerar um Dicionário de Dados interativo, profissional e focado em governança, pronto para ser hospedado no GitHub Pages. Padrão profissional usando as boas práticas internacionais para governança de dados.
+
+**DIRETRIZES ESTRITAS ANTI-ALUCINAÇÃO (LEIA COM ATENÇÃO):** 
+1. **Zero Omissão:** É estritamente proibido usar placeholders no código gerado (como `<!-- restante das tabelas aqui -->`, `// mais código`, ou `...`). Você deve gerar o HTML, CSS e JS contemplando **100% das tabelas e colunas** presentes no script DDL fornecido.
+2. **Fidelidade ao DDL:** Não invente colunas, tabelas ou relacionamentos que não estejam no DDL. Se uma informação de governança (como Linhagem ou LGPD) não estiver óbvia, infira com base no nome e contexto da coluna, mas mantenha a tipagem e chaves exatas do DDL.
+3. **Links Funcionais:** Use apenas CDNs oficiais e estáveis para bibliotecas externas (ex: Bootstrap 5, Tailwind, FontAwesome, Panzoom.js, Prism.js ou Highlight.js). 
+4. **Sem Emojis:** Não utilize emojis na interface gerada nem na sua explicação de saída.
+
+---
+
+# ENTRADA DE DADOS E CUSTOMIZAÇÃO DO PROJETO
+**1. Informações do Projeto:**
+- **Nome da Empresa/Projeto:** Sistema de Gestão Operacional Pizzaria — Abolição Esfiharia e Pizzaria Ltda - ME (CNPJ 25.094.370/0001-66)
+- **Instituição / Disciplina:** Centro Universitário Fundação Santo André — Análise e Desenvolvimento de Sistemas — SQL (Structured Query Language)
+- **Nome do Professor Orientador:** Prof. Dr. Diego Marques de Carvalho
+- **Equipe:** Grupo 3 – Grupo da Discórdia
+- **Integrantes e Papeis (Data Owners e Data Stewards):** 
+  - Herbert Silva dos Santos (RA 762999) - Data Owner (Requisitos e Regras de Negócio) | Líder do projeto e Revisor/QA
+  - Pedro Marques (RA 762316) - Data Owner (Regras de Negócio e Políticas Legais: CDC, LGPD, CTN e CVS 5/2013)
+  - Rodrigo Bueres (RA 763050) - Data Steward (Modelagem de Dados e DER)
+  - Vinicius Sales (RA 762925) - Data Steward (Script DDL e Qualidade Técnica do Dicionário)
+- **Cores da Identidade Visual:** Laranja (#F57C00) como cor de destaque, Branco (#FFFFFF) como fundo e Azul Escuro (#0B1F3A) para topbar, sidebar e títulos. No Dark Mode, usar Azul Escuro como fundo, Laranja como destaque e Branco para o texto.
+- **Resumo do Negócio:** Sistema de gestão operacional da Abolição Esfiharia e Pizzaria Ltda - ME, microempresa do segmento de alimentação que atende no balcão, por retirada e por entrega. O sistema centraliza em um banco de dados relacional único (MySQL 8.0, modelo normalizado até a 3FN) o controle de clientes e endereços, cardápio (produtos, categorias e histórico de preços), pedidos e itens (incluindo sabores), pagamentos e estornos, caixa diário, entregas e repasse aos motoboys, estoque de ingredientes e movimentações, fornecedores, usuários com perfis de acesso e log de auditoria. Os pedidos chegam pelo balcão, telefone ou aplicativo de mensagens e são sempre registrados pelo atendente. Fora do escopo: integração com iFood e marketplaces, maquininhas/gateways/APIs de Pix, folha de pagamento e RH, gestão contábil avançada, emissão de documentos fiscais junto à SEFAZ, rastreamento de entregadores em tempo real e programa de fidelidade.
+- **Perfis de Acesso (RBAC) definidos no documento de requisitos:** Atendente, Gerente e Administrador. Use a Matriz de Permissões por Perfil (seção 3.1 do documento de requisitos) como fonte para a coluna "Controle de Acesso (RBAC)" do dicionário. Nenhum perfil executa exclusão física (PR01).
+
+**2. Documentação do Banco de Dados:**
+- **Especificação de Requisitos e Regras de Negócio:**
+Documento em ANEXO: Especificacao_Requisitos_PIZZARIA_1.3_pronto.pdf (versão 1.3, entrega em 19/11/2026)
+
+- **Diagrama Entidade e Relacionamento (DER - Descrição ou Metadados):**
+Documento em ANEXO: DER_Pizzaria.png
+
+- **Script de Criação DDL (Data Definition Language):**
+Documento em ANEXO: DDL_Pizzaria.sql
+
+---
+
+# TAREFAS QUE A IA DEVE EXECUTAR
+
+## PARTE 1: Lista de Customização e Metadados do Projeto
+Apresente um cabeçalho executivo confirmando os dados de entrada. Adicione um parágrafo sobre "Data Literacy" (Cultura de Dados) explicando o valor estratégico deste dicionário específico para a empresa descrita, baseando-se no DMBOK e COBIT.
+
+## PARTE 2: Análise de Coerência e Sugestões de Ajustes Manuais
+Cruze as três fontes de dados (Requisitos, DER e DDL). 
+- Liste divergências de cardinalidade, tipos de dados, chaves estrangeiras órfãs ou regras de negócio descritas nos requisitos mas ausentes no DDL.
+- Fornecer a correção em formato de lista (Ex: "No documento de requisitos, na linha X, altere a palavra Y para Z para alinhar com a tabela W").
+- Se estiver tudo perfeito, diga explicitamente: "Não são necessários ajustes nestes documentos."
+- Observação: avise que o dicionário de dados não pode ser publicado sem as devidas alterações no documento de requisitos e no DER.
+- Ao final, o documento de requisitos deve ser exportado em PDF e o DER em PNG.
+
+Verifique minuciosamente todos os documentos (Especificação de Requisitos e Regras de Negócio, Diagrama Entidade e Relacionamento, Script de Criação DDL), e liste todos os itens que o autor esqueceu de remover ou preencher:
+- Textos entre colchetes `[ ]` não substituídos.
+- Páginas de instruções do template (ex.: *"COMO UTILIZAR ESTE MODELO"*) e caixas de texto iniciadas por *"Orientação:"* ou textos em cinza.
+- Nomes fictícios ou padronizados do template no Histórico de Revisões.
+- O histórico de revisões deve ter no mínimo 3 itens, sendo o primeiro a criação inicial do documento, mais duas revisões, sendo esta realizada agora a 4º revisão.
+
+## PARTE 3: Geração do Código (HTML, CSS, JS) do Dicionário de Dados
+Gere o código completo. Crie blocos de código distintos e completos para `index.html`, `style.css` e `script.js`. 
+
+**Diretrizes de Layout (UI/UX) obrigatórias:**
+1. **Estrutura de Página (Dashboard):**
+   - **Topbar:** Título do projeto, nome da empresa, Toggle para Light/Dark Mode.
+   - **Identificação:** seção de identificação do projeto de modelagem de banco de dados com:
+**Escopo:** Escopo do projeto em um parágrafo resumido.
+**Tecnologia:** MySQL.
+**Responsáveis:** Identificação dos autores do projeto e suas responsabilidades.
+   - **Sidebar Esquerda (Navegação):** Menu com âncoras (`<a href="#tabela_nome">`) listando todas as tabelas do sistema dinamicamente. A sidebar de navegação deve ser responsiva e se adaptar a celulares.
+   - **Área Principal (Main):** Onde as tabelas e o DER serão exibidos.
+2. **Painel de Controle Acima do Dicionário:**
+   - Botão de ação: Baixar Especificação de Requisitos (PDF).
+   - Botão para abrir o DER em modal.
+   - Botão para abrir o DDL (Data Definition Language).
+   - **Barra de Pesquisa (JS Real-time):** Um input que filtre instantaneamente as tabelas e linhas do dicionário conforme o usuário digita (filtrando por nome da coluna ou tabela).
+3. **Visualizador do DER no Modal (Navegação Ótima e Zoom):**
+   - A imagem do DER deve ser implementada com um recurso de zoom e navegação ótima.
+   - Utilize a biblioteca Panzoom.js (via CDN) ou lógica JS equivalente para garantir que a imagem abra em tela cheia com os seguintes recursos:
+     - Zoom In e Zoom Out via scroll do mouse.
+     - Pan (arrastar a imagem livremente em qualquer direção) segurando o clique do mouse.
+     - Botões fixos na tela do modal para: Zoom +, Zoom -, e Reset (voltar ao tamanho e posição original).
+4. **Visualizador do Script DDL no Modal (Syntax Highlighting SQL):**
+   - Ao clicar no botão "Abrir DDL", deve abrir um modal dedicado e responsivo exibindo **100% do código SQL original** fornecido em anexo (sem omissões ou resumos).
+   - **Syntax Highlighting Profissional:** Utilize a biblioteca **Prism.js** ou **Highlight.js** (via CDN oficial e estável, com tema escuro como *Atom One Dark* ou *Tomorrow Night*) configurada especificamente para a linguagem `sql` (`class="language-sql"`), garantindo destaque visual claro para palavras-chave (`CREATE TABLE`, `PRIMARY KEY`, `FOREIGN KEY`, `CONSTRAINT`), tipos de dados (`VARCHAR`, `INT`, `DECIMAL`), strings e comentários.
+   - **Recursos de Usabilidade do Código:**
+     - **Numeração de Linhas:** Exibir números de linha alinhados à esquerda para facilitar auditorias e revisões de código.
+     - **Botão "Copiar DDL":** Um botão no topo do modal que copia todo o script SQL para a área de transferência via `navigator.clipboard.writeText()` e altera temporariamente seu texto para "Copiado!" como feedback visual.
+     - **Scroll Independente:** Área de código com barra de rolagem vertical e horizontal (`overflow: auto` e `max-height: 70vh`) com fonte monoespaçada legível (ex: `Fira Code`, `JetBrains Mono` ou `Consolas`).
+
+**Diretrizes do Dicionário de Dados (Governança):**
+Cada tabela do DDL deve virar um `<section>` com título, descrição da finalidade da tabela e uma tabela HTML responsiva.
+As colunas da tabela HTML DEVEM ser:
+1. **Atributo:** Nome da coluna no BD.
+2. **Descrição / Regra de Negócio:** Para que serve e limites.
+3. **Tipo e Tamanho:** Extraído diretamente do DDL (Ex: VARCHAR(255)).
+4. **Constraints:** (PK, FK, NULL, UNIQUE). Use marcadores textuais destacados em negrito ou brackets (Ex: [PK] e [FK]).
+5. **Privacidade (LGPD/GDPR):** Utilize Badges visuais (Tags coloridas via CSS):
+   - [DPS] (Dado Pessoal Sensível - Cor de fundo vermelha).
+   - [DP] (Dado Pessoal - Cor de fundo amarela).
+   - [N/A] (Não Aplicável - Cor de fundo verde).
+6. **Linhagem (Data Lineage):** Origem e Destino do dado.
+7. **Controle de Acesso (RBAC):** Quem tem acesso a esta coluna/tabela.
+
+*(LEMBRETE PARA A IA: Não abrevie o código, entregue as estruturas de TODAS as tabelas contidas no DDL).*
+
+## PARTE 4: Passo a Passo de Estrutura de Pastas e Arquivos
+Escreva um tutorial técnico para o aluno informando:
+1. A estrutura exata de diretórios local:
+   ```text
+   /meu-dicionario
+   ├── index.html
+   ├── style.css
+   ├── script.js
+   ├── docs/
+   │   └── Especificacao_Requisitos_Regras_Negocio_BD.pdf
+   └── assets/
+       └── der.png (ou .jpg)
+
+Explicação de como as tags <link> e <script> no HTML já estão preparadas para essa estrutura exata.
+Como o navegador bloqueia requisições fetch() em arquivos locais abertos via file:// (caso o aluno teste clicando duas vezes no index.html antes de subir no GitHub), não peça para o JS ler um arquivo .sql externo. Deixe o SQL embutido dentro da tag <pre><code class="language-sql">...</code></pre> no próprio index.html (o que também garante o cumprimento da regra de Zero Omissão) e mantenha a estrutura de pastas exatamente como você já desenhou.
+
+## PARTE 5: Tutorial de Deploy no GitHub Pages
+
+Crie um passo a passo para deploy:
+
+- Como subir a pasta para um repositório público no GitHub.
+
+O caminho exato: Settings > Pages > Build and deployment > Source: GitHub Actions > Select "Static HTML" > Configure > Commit changes.
+
+Um aviso importante sobre Case Sensitivity (maiusculas e minúsculas) nos caminhos dos arquivos no servidor do GitHub Pages.

@@ -1,0 +1,222 @@
+=====================================================================
+DICIONÁRIO DE DADOS - SISTEMA DE GESTÃO OPERACIONAL PIZZARIA
+Resumo Executivo (Parte 1) e Análise de Coerência (Parte 2)
+Data da análise: 14/11/2026
+=====================================================================
+
+
+PARTE 1 - CUSTOMIZAÇÃO E METADADOS DO PROJETO
+---------------------------------------------------------------------
+
+Projeto ............ Sistema de Gestão Operacional Pizzaria
+Empresa / Cliente .. Abolição Esfiharia e Pizzaria Ltda - ME
+                     CNPJ 25.094.370/0001-66
+Instituição ........ Centro Universitário Fundação Santo André
+Curso / Disciplina . Análise e Desenvolvimento de Sistemas
+                     SQL (Structured Query Language)
+Professor .......... Prof. Dr. Diego Marques de Carvalho
+Equipe ............. Grupo 3 - Grupo da Discórdia
+SGBD ............... MySQL 8.0.16 ou superior (InnoDB, utf8mb4)
+
+Integrantes e papéis de governança:
+  - Herbert Silva dos Santos (RA 762999)
+    Data Owner: Requisitos e Regras de Negócio. Líder e Revisor/QA.
+  - Pedro Marques (RA 762316)
+    Data Owner: Regras de Negócio e Políticas Legais
+    (CDC, LGPD, CTN e CVS 5/2013).
+  - Rodrigo Bueres (RA 763050)
+    Data Steward: Modelagem de Dados e DER.
+  - Vinicius Sales (RA 762925)
+    Data Steward: Script DDL e Qualidade Técnica do Dicionário.
+
+Identidade visual:
+  - Laranja #F57C00 (destaque)
+  - Branco #FFFFFF (fundo)
+  - Azul Escuro #0B1F3A (barra superior, menu lateral e títulos)
+  - Modo escuro: fundo Azul Escuro, destaque Laranja, texto Branco
+
+Documentos de entrada:
+  - Especificação de Requisitos e Regras de Negócio, versão 1.3
+    (25 páginas, entrega em 19/11/2026)
+  - Diagrama Entidade-Relacionamento, versão 1.1 (20 entidades)
+  - Script DDL: DDL_Pizzaria.sql (20 tabelas, 149 colunas, 28 chaves
+    estrangeiras, 11 restrições UNIQUE e 23 restrições CHECK)
+
+Perfis de acesso (RBAC): Atendente, Gerente e Administrador, conforme
+a Matriz de Permissões da seção 3.1 da Especificação. Nenhum perfil
+executa exclusão física (PR01).
+
+Data Literacy (Cultura de Dados)
+
+Em uma pizzaria, o mesmo dado passa por várias mãos na mesma noite:
+o atendente registra o pedido, o gerente fecha o caixa e paga o
+repasse do motoboy, e o administrador responde por um pedido de
+anonimização de cliente. Se cada um entender "valor total",
+"situação" ou "saldo" de um jeito, o caixa não fecha e o estoque
+falta antes do expediente. O DAMA-DMBOK trata o dicionário de dados
+como o metadado básico da Governança de Dados: é ele que dá
+significado único, dono e regra de qualidade a cada atributo. O
+COBIT (objetivo APO14 - Gerenciar Dados) exige que os dados tenham
+responsáveis, classificação e controle de acesso definidos e
+verificáveis. Este dicionário entrega isso para a Abolição: cada
+uma das 149 colunas tem descrição de negócio, tipo exato do banco,
+restrições, classificação LGPD, origem e destino (linhagem) e
+permissão por perfil. O ganho prático é reduzir erro de operação,
+facilitar o treinamento de novos funcionários, comprovar a
+conformidade com a LGPD, o CDC e o fisco, e dar base confiável para
+decisões como preço, compra de ingredientes e escala de entregas.
+
+
+PARTE 2 - ANÁLISE DE COERÊNCIA (REQUISITOS x DER x DDL)
+---------------------------------------------------------------------
+
+2.1 O que já está coerente
+
+  - As 20 entidades da seção 6.1 da Especificação, as 20 entidades
+    do DER v1.1 e as 20 tabelas do DDL são as mesmas, com os mesmos
+    nomes.
+  - As 149 colunas do DDL têm os mesmos nomes e a mesma ordem do DER.
+  - As 28 chaves estrangeiras do DDL correspondem aos 28
+    relacionamentos do DER. Não há chave estrangeira órfã.
+  - Cardinalidades: todas 1:N, exceto pedido-entrega, que é 1:1 e
+    está garantida por UNIQUE em entrega.id_pedido.
+  - As colunas opcionais do DER (pedido.id_endereco,
+    entrega.id_repasse_motoboy e movimentacao_estoque.id_fornecedor)
+    aceitam NULL no DDL.
+  - As listas ENUM do DDL são iguais às do DER e da seção 6.1.
+  - Todas as restrições UNIQUE da seção 6.2 existem no DDL, inclusive
+    as compostas de item_sabor e repasse_motoboy.
+  - Todos os CHECKs citados na seção 6.2 e nas RN06, RN08, RN09,
+    RN14, RN24 e PR04 existem no DDL.
+  - As 28 chaves estrangeiras usam ON DELETE RESTRICT e ON UPDATE
+    RESTRICT, como exige a seção 6.2.
+  - Engine InnoDB e utf8mb4 / utf8mb4_0900_ai_ci em 100% das tabelas
+    (RNF07).
+  - Os índices pedidos na seção 6.3 existem (pedido.data_hora e os
+    índices das chaves estrangeiras).
+
+2.2 Correções já aplicadas nesta revisão
+
+  - Nome da empresa: "Abolicação" corrigido para "Abolição" nos 3
+    lugares do PDF da Especificação (título da capa, quadro "Empresa
+    / Cliente" e item 1.1). O traço de "Ltda - ME" foi padronizado.
+  - DDL: script refeito conforme o DER v1.1. Antes, o script gerado
+    pelo Workbench tinha valores em dinheiro sem centavos
+    (DECIMAL(10)), campos de enum como INT, a coluna "loguin" com
+    charset armênio, a coluna "data_anonimatizacao" e não tinha as
+    restrições UNIQUE e CHECK.
+  - Modelo do Workbench: versão 1.4 igual ao DDL.
+
+2.3 Ajustes no documento de Requisitos
+
+SITUAÇÃO EM 14/11/2026: os itens 1 a 6 abaixo foram aplicados na
+versão 1.4 da Especificação (arquivos
+Especificacao_Requisitos_PIZZARIA_v1.4.docx e .pdf). Continuam
+pendentes somente os itens 7 e 8, que dependem de informação do
+grupo. O texto abaixo registra o que foi encontrado na versão 1.3.
+
+Estes ajustes precisam ser feitos no arquivo original da
+Especificação (Writer ou Word), porque mudam texto e tabelas.
+
+  1. Seção 3.1 (Matriz de Permissões, página 14): a tabela
+     historico_situacao_pedido não aparece em nenhuma linha.
+     Correção: na linha "pedido, item_pedido, item_sabor, pagamento,
+     entrega", acrescente uma linha nova logo abaixo com
+     "historico_situacao_pedido" e as permissões "Consultar" para
+     Atendente, Gerente e Administrador, com a nota "gravação
+     somente por gatilho (RN10)". O dicionário publicado já mostra
+     essa permissão marcada como "proposta".
+
+  2. Seção 6.2, linha "Anonimização (LGPD)" (página 22): o texto diz
+     que o procedimento "anula telefone, e-mail, CPF e endereços".
+     No DDL, logradouro, numero, bairro, cep, cidade e uf da tabela
+     endereco são NOT NULL (exigência do RF01), então não podem ser
+     anulados.
+     Correção: troque "anula telefone, e-mail, CPF e endereços" por
+     "anula telefone, e-mail e CPF, substitui os campos de endereço
+     por 'ANONIMIZADO' e inativa os endereços (ativo = 0)".
+
+  3. Seção 2.1, linha RF14 (página 6): o ator principal é "Gerente /
+     Atendente", mas a matriz 3.1 dá ao Atendente apenas "Consultar"
+     em ingrediente.
+     Correção: troque "Gerente / Atendente" por "Gerente /
+     Administrador".
+
+  4. Seção 1.3, convenções (página 5): o texto cita o prefixo
+     "data_ ou dt_", mas nenhuma coluna do banco usa "dt_".
+     Correção: troque "com o prefixo data_ ou dt_" por "com o prefixo
+     data_".
+
+  5. Seção 4 (Regras de Negócio): a coluna "Implementação Prevista"
+     cita gatilhos, procedimentos e visões que não fazem parte do
+     script DDL de tabelas. São eles:
+       - gatilhos das RN01, RN04, RN05, RN07, RN10, RN12, RN13,
+         RN14 (limite pelo subtotal), RN16 a RN25;
+       - procedimentos sp_fechar_caixa (RN15) e
+         sp_anonimizar_cliente (PR03);
+       - visões de repasse (RN11) e de lotes próximos do vencimento
+         (PR04);
+       - gatilhos de auditoria e de bloqueio do log (RNF01, RNF10);
+       - conta de serviço app_pizzaria e seus privilégios (RNF10).
+     Correção: acrescente ao final do parágrafo de abertura da seção
+     4 a frase "As restrições declarativas (PK, FK, UNIQUE, CHECK,
+     ENUM e DEFAULT) estão no script DDL_Pizzaria.sql; gatilhos,
+     procedimentos, visões e privilégios serão entregues em script
+     complementar na etapa de programação do banco."
+
+  6. Histórico de Revisões (página 2): o histórico tem 8 registros,
+     acima do mínimo de 3, e o primeiro é a criação do documento.
+     Falta registrar esta revisão.
+     Correção: acrescente a linha
+       Versão 1.4 | 14/11/2026 | "Revisão de coerência com o DER
+       v1.1 e o script DDL: correção do nome da empresa (Abolição);
+       inclusão de historico_situacao_pedido na matriz de
+       permissões; ajuste da regra de anonimização de endereços;
+       ajuste do ator do RF14 e da convenção de prefixos; nota sobre
+       o script complementar de gatilhos e procedimentos." |
+       Herbert Silva dos Santos (Líder e Revisor/QA)
+     Depois, troque "1.3" por "1.4" na capa ("Versão do Documento")
+     e na seção 8 ("na versão 1.3").
+
+  7. Seção 8 (Validação e Aprovação, página 25): o representante do
+     cliente aparece só como "Valdenar".
+     Correção: informe o nome completo e o cargo.
+
+  8. Histórico de Revisões: as versões 1.0, 1.1, 1.2 e 1.3 têm a
+     mesma data (04/11/2026). Confirme se as quatro revisões foram
+     mesmo feitas no mesmo dia.
+
+2.4 Ajustes no DER
+
+  Não são necessários ajustes de conteúdo no DER v1.1: entidades,
+  atributos, chaves e cardinalidades conferem com o DDL.
+  Observações:
+  - O DER informa só o tipo genérico (varchar, decimal); os tamanhos
+    estão no DDL e no dicionário. Isso é aceitável em DER lógico.
+  - O DER foi exportado em PNG (assets/der.png) a partir do
+    "Diagrama pizzaria 1.1.pdf".
+
+2.5 Ajuste opcional no DDL
+
+  - O schema se chama "mydb", nome padrão do MySQL Workbench. Para a
+    entrega final, vale renomear para "pizzaria" no modelo (aba
+    Schema do Workbench) e gerar o script de novo. Não é erro.
+
+2.6 Itens de template esquecidos
+
+  - Textos entre colchetes [ ] não substituídos: nenhum encontrado.
+  - Páginas de instrução ("COMO UTILIZAR ESTE MODELO") e caixas
+    "Orientação:": nenhuma encontrada.
+  - Nomes fictícios do template no Histórico de Revisões: nenhum
+    encontrado. Todos os autores são integrantes do grupo.
+  - Histórico de Revisões: tem 8 registros. Falta só a linha desta
+    revisão (item 6 da seção 2.3).
+
+2.7 Aviso
+
+  Os ajustes 1 a 6 da seção 2.3 já estão na Especificação v1.4, e o
+  site desta pasta já usa essa versão (docs/
+  Especificacao_Requisitos_Regras_Negocio_BD.pdf). O DER está em PNG
+  (assets/der.png). Restam os itens 7 e 8: se o grupo alterar o
+  documento, exporte o PDF de novo com o mesmo nome e substitua o
+  arquivo da pasta docs/.
